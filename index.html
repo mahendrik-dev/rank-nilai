@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Leaderboard ranking nilai siswa kelas 9 dengan sistem rank Mobile Legends. Skor dihitung dari jumlah nilai pada tabel Total."
+    />
+    <meta name="theme-color" content="#080b1a" />
+    <title>ML Rank Leaderboard · Ranking Nilai Siswa</title>
+    <link rel="icon" href="assets/mlbb/rank-10.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+      <div class="grid-overlay"></div>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Beranda ML Rank Leaderboard">
+        <img src="assets/mlbb/rank-10.png" alt="Logo ML Rank Leaderboard" width="46" height="46" />
+        <span class="brand-text">
+          <strong>ML RANK <em>LEADERBOARD</em></strong>
+          <small>Ranking Nilai Siswa · Kelas 9</small>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <a href="#leaderboard">Leaderboard</a>
+        <a href="#ranks">Rank</a>
+        <a href="#aturan">Aturan</a>
+      </nav>
+      <div class="header-tag"><span class="dot"></span> SMP Negeri 14 Malang</div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span>◆</span> LEADERBOARD AKADEMIK 2024/2025</div>
+          <h1>Ranking Nilai Siswa<br /><span>ala Mobile Legends</span></h1>
+          <p>
+            Setiap siswa "naik rank" berdasarkan <strong>skor total</strong> dari
+            tabel <em>Total</em>. Semakin tinggi skor, semakin dekat ke
+            <strong>Mythical Immortal</strong>. Klik baris siswa untuk melihat
+            detail nilai tugasnya.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#leaderboard">Lihat Leaderboard <span>→</span></a>
+            <a class="btn btn-ghost" href="#ranks">Cek Daftar Rank</a>
+          </div>
+          <div class="hero-note">
+            <span class="mini-emblem" id="heroEmblem" aria-hidden="true"></span>
+            <span id="heroNoteText">Memuat data...</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="visual-ring ring-outer"></div>
+          <div class="visual-ring ring-inner"></div>
+          <div class="visual-emblem" id="heroEmblemLarge"></div>
+          <div class="visual-caption">
+            <span>TOP RANK</span>
+            <strong id="heroTopName">—</strong>
+            <small id="heroTopScore">—</small>
+          </div>
+          <div class="floating-chip chip-1">SKOR MAKSIMAL</div>
+          <div class="floating-chip chip-2">98% – 100%</div>
+        </div>
+      </section>
+
+      <section class="stats" id="statistik" aria-label="Statistik leaderboard">
+        <article class="stat-card">
+          <div class="stat-icon blue">◈</div>
+          <div><span>Total Siswa</span><strong id="statStudents">—</strong></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon gold">★</div>
+          <div><span>Skor Maksimal</span><strong id="statMax">—</strong></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon violet">◎</div>
+          <div><span>Rata-rata Skor</span><strong id="statAvg">—</strong></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon green">⬢</div>
+          <div><span>Kelas Terdaftar</span><strong id="statClasses">—</strong></div>
+        </article>
+      </section>
+
+      <section class="podium-section" aria-labelledby="podiumTitle">
+        <div class="section-head compact">
+          <div>
+            <span class="section-kicker">HALL OF FAME</span>
+            <h2 id="podiumTitle">Top 3 Leaderboard</h2>
+          </div>
+          <p>Peraih skor tertinggi dari seluruh kelas 9.</p>
+        </div>
+        <div class="podium" id="podium"></div>
+      </section>
+
+      <section class="leaderboard-section" id="leaderboard" aria-labelledby="leaderboardTitle">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">CLASSIC RANKED</span>
+            <h2 id="leaderboardTitle">Leaderboard Siswa</h2>
+            <p>Urutan ditentukan dari skor hasil penjumlahan tabel <strong>Total</strong>.</p>
+          </div>
+          <div class="legend-mini">
+            <span><i class="legend-dot gold"></i> Skor maksimal 300 jadi patokan 100%</span>
+            <span><i class="legend-dot violet"></i> Klik siswa untuk detail nilai</span>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-box">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Cari nama, NISN, atau kelas..."
+              autocomplete="off"
+              aria-label="Cari siswa"
+            />
+          </label>
+          <label class="select-box">
+            <span>Kelas</span>
+            <select id="classFilter" aria-label="Filter kelas"><option value="">Semua kelas</option></select>
+          </label>
+          <label class="select-box">
+            <span>Rank</span>
+            <select id="rankFilter" aria-label="Filter rank"><option value="">Semua rank</option></select>
+          </label>
+          <label class="select-box">
+            <span>Urutkan</span>
+            <select id="sortSelect" aria-label="Urutan leaderboard">
+              <option value="score-desc">Skor tertinggi</option>
+              <option value="score-asc">Skor terendah</option>
+              <option value="name-asc">Nama A–Z</option>
+              <option value="rank-desc">Rank tertinggi</option>
+            </select>
+          </label>
+          <button class="btn-reset" id="resetFilter" type="button">Reset</button>
+        </div>
+
+        <div class="result-info">
+          <span id="resultCount">—</span>
+          <span class="result-source">Sumber: tabel <strong>Total</strong> pada sheet 9.1 fix – 9.9 fix</span>
+        </div>
+
+        <div class="table-shell">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th class="col-rank">#</th>
+                <th class="col-student">Siswa</th>
+                <th class="col-tier">Rank</th>
+                <th class="col-score">Score</th>
+                <th class="col-progress">Persentase</th>
+                <th class="col-action"><span class="sr-only">Detail</span></th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody"></tbody>
+          </table>
+          <div class="empty-state" id="emptyState" hidden>
+            <div>⌕</div>
+            <h3>Tidak ada siswa ditemukan</h3>
+            <p>Coba ubah kata kunci atau filter yang sedang digunakan.</p>
+          </div>
+        </div>
+
+        <div class="load-more-wrap">
+          <button class="btn btn-ghost" id="loadMore" type="button" hidden>Muat lebih banyak</button>
+        </div>
+      </section>
+
+      <section class="ranks-section" id="ranks" aria-labelledby="ranksTitle">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">RANK TIER LIST</span>
+            <h2 id="ranksTitle">Tingkatan Rank</h2>
+            <p>Persentase dihitung dari <strong>skor maksimal 300</strong> (100 × 3 tugas) yang menjadi patokan 100%.</p>
+          </div>
+        </div>
+        <div class="rank-grid" id="rankGrid"></div>
+      </section>
+
+      <section class="rules-section" id="aturan" aria-labelledby="rulesTitle">
+        <div class="rules-card">
+          <span class="section-kicker">HOW IT WORKS</span>
+          <h2 id="rulesTitle">Aturan Perhitungan</h2>
+          <div class="rules-grid">
+            <article>
+              <span class="step">01</span>
+              <h3>Sumber nilai</h3>
+              <p>Hanya nilai dari tabel <strong>Total</strong> (Total 1 s.d. Total 3) yang digunakan.</p>
+            </article>
+            <article>
+              <span class="step">02</span>
+              <h3>Menjadi score</h3>
+              <p>Total 1 + Total 2 + Total 3 dijumlahkan menjadi <strong>score</strong>. Skor maksimal <strong>300</strong> (100 × 3 tugas).</p>
+            </article>
+            <article>
+              <span class="step">03</span>
+              <h3>Menentukan rank</h3>
+              <p>
+                <code>persentase = score ÷ 300 × 100%</code>, lalu dicocokkan
+                dengan rentang rank.
+              </p>
+            </article>
+            <article>
+              <span class="step">04</span>
+              <h3>Detail tugas</h3>
+              <p>
+                Nilai Tugas 1 (Presentasi Mading), Tugas 2 (Analisa Berita), dan
+                Tugas 3 (Poster) diambil dari Total 1, 2, dan 3.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <img src="assets/mlbb/rank-10.png" alt="" width="32" height="32" />
+      <div>
+        <strong>ML Rank Leaderboard</strong>
+        <span id="footerMeta">Data nilai kelas 9 · SMP Negeri 14 Malang</span>
+      </div>
+      <a href="#top">Kembali ke atas ↑</a>
+    </footer>
+
+    <div class="modal" id="detailModal" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalName">
+        <button class="modal-close" type="button" data-close-modal aria-label="Tutup detail">×</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
